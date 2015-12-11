@@ -25,6 +25,8 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
+	if ( req.user === undefined ) return res.status(401).end();
+	if ( req.body.author._id !== req.user._id ) return res.status(401).end();
 	Story.create(req.body)
 	.then(function (story) {
 		return story.populateAsync('author');
@@ -44,6 +46,9 @@ router.get('/:id', function (req, res, next) {
 });
 
 router.put('/:id', function (req, res, next) {
+	if ( req.user === undefined ) return res.status(401).end();
+	if ( !( req.user._id === req.story.author._id || req.user.isAdmin ) ) return res.status(401).end();
+	if ( req.body.author && !req.user.isAdmin ) return res.status(401).end();
 	_.extend(req.story, req.body);
 	req.story.save()
 	.then(function (story) {
@@ -53,6 +58,8 @@ router.put('/:id', function (req, res, next) {
 });
 
 router.delete('/:id', function (req, res, next) {
+	if ( req.user === undefined ) return res.status(401).end();
+	if ( !( req.user._id === req.story.author._id || req.user.isAdmin ) ) return res.status(401).end();
 	req.story.remove()
 	.then(function () {
 		res.status(204).end();
