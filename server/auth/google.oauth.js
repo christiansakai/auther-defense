@@ -16,8 +16,8 @@ router.get('/callback', passport.authenticate('google', {
 }));
 
 passport.use(new GoogleStrategy({
-	clientID: '238524570915-ivf9lnhm9bsfq13cle5ap8s28d4lmhrp.apps.googleusercontent.com',
-	clientSecret: 'GST6VQnVmhx1YIB1vDXXB3PF',
+	clientID: '42854484652-1j1ot60ulr56iaosa4ce20v49rn01qgi.apps.googleusercontent.com',
+	clientSecret: 'e8lMti4ELcPDNOHh_CytzuxY',
 	callbackURL: 'http://127.0.0.1:8080/auth/google/callback'
 }, function (token, refreshToken, profile, done) { 
 	User.findOne({'google.id': profile.id }, function (err, user) {
